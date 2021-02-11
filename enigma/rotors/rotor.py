@@ -1,4 +1,4 @@
-from typing import NoReturn
+from typing import NoReturn, Optional, Tuple
 
 
 class Rotor:
@@ -16,20 +16,25 @@ class Rotor:
         assert offset >= 0
         self.offset = offset
         self.period = period
-        self.cyphered_count = 0
+        self.step_count = 0
 
-    def forward(self, char: str) -> str:
+    def forward(self, char: str, step: Optional[bool] = False) -> Tuple[str, bool]:
         """
         Transforms a char through the rotor
         :param char: the char to transform
-        :return: the transformed char
+        :param step: if the rotor should step before transforming
+        :return: the transformed char and a tuple indicating whether the next rotor should step
         """
         assert ord('A') <= ord(char) <= ord('Z')
-        self.cyphered_count += 1
-        if self.cyphered_count % self.period == 0:
-            self.offset += 1
+        do_step = False
+        if step:
+            self.step_count += 1
+            if self.step_count % self.period == 0:
+                self.offset += 1
+                if self.offset > 0 and self.offset % 26 == 0:
+                    do_step = True
         transformed = chr(((ord(char) - ord('A') + self.offset) % 26) + ord('A'))
-        return transformed
+        return transformed, do_step
 
     def backward(self, char: str) -> str:
         """
@@ -46,5 +51,5 @@ class Rotor:
         """
         Resets rotor to initial state
         """
-        self.offset -= self.cyphered_count // self.period
-        self.cyphered_count = 0
+        self.offset -= self.step_count // self.period
+        self.step_count = 0

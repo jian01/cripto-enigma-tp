@@ -35,8 +35,9 @@ class Enigma:
         cyphertext = ""
         for c in plaintext:
             c = self.plugboard.transform(c)
+            do_step = True
             for rot in self.rotors:
-                c = rot.forward(c)
+                c, do_step = rot.forward(c, do_step)
             c = self.reflector.reflect(c)
             for rot in self.rotors:
                 c = rot.backward(c)
