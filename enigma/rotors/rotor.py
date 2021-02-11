@@ -1,5 +1,6 @@
 from typing import NoReturn
 
+
 class Rotor:
     """
     Engima rotor

@@ -1,9 +1,11 @@
 from typing import List, Tuple, Optional
 
+
 class Plugboard:
     """
     Enigma plugboard
     """
+
     def __init__(self, permutations: Optional[List[Tuple[str, str]]] = None):
         """
 

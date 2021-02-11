@@ -1,5 +1,7 @@
-from enigma.plugboard import Plugboard
 import unittest
+
+from enigma.plugboard import Plugboard
+
 
 class PlugboardUnitTests(unittest.TestCase):
     def test_empty_plugboard(self):
@@ -23,4 +25,3 @@ class PlugboardUnitTests(unittest.TestCase):
     def test_plugboard_double_wiring_error(self):
         with self.assertRaises(Exception):
             Plugboard([('A', 'C'), ('A', 'B')])
-

@@ -1,5 +1,3 @@
-from typing import NoReturn
-
 class Reflector:
     """
     Engima reflector

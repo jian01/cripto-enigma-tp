@@ -1,12 +1,15 @@
-from .plugboard import Plugboard
-from enigma.rotors.rotor import Rotor
-from enigma.reflectors.reflector import Reflector
 from typing import NoReturn, List
+
+from enigma.reflectors.reflector import Reflector
+from enigma.rotors.rotor import Rotor
+from .plugboard import Plugboard
+
 
 class Enigma:
     """
     Enigma machine
     """
+
     def __init__(self, reflector: Reflector,
                  plugboard: Plugboard, rotors: List[Rotor]):
         """

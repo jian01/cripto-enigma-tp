@@ -1,5 +1,7 @@
-from enigma.rotors.rotor import Rotor
 import unittest
+
+from enigma.rotors.rotor import Rotor
+
 
 class RotorUnitTests(unittest.TestCase):
     def test_rotor_period_larger_than_0(self):
@@ -42,7 +44,7 @@ class RotorUnitTests(unittest.TestCase):
 
     def test_full_offset_rotation(self):
         rotor = Rotor(offset=0, period=1)
-        for num in range(1,ord('Z')-ord('A')+1):
+        for num in range(1, ord('Z') - ord('A') + 1):
             self.assertEqual(rotor.forward('A'), chr(num + ord('A')))
         self.assertEqual(rotor.forward('A'), 'A')
 
@@ -73,4 +75,3 @@ class RotorUnitTests(unittest.TestCase):
         self.assertEqual(rotor.backward('F'), 'C')
         rotor.forward('D')
         self.assertEqual(rotor.backward('H'), 'D')
-
