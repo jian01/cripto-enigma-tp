@@ -1,6 +1,7 @@
 import unittest
 
 from enigma.rotors.rotor import Rotor
+from enigma.rotors.rotor_with_mapping_and_notches import RotorWithMappingAndNotches
 
 
 class RotorUnitTests(unittest.TestCase):
@@ -88,3 +89,16 @@ class RotorUnitTests(unittest.TestCase):
             _, do_step = rotor.forward('A', True)
             self.assertEqual(do_step, False)
         self.assertEqual(rotor.forward('A', True)[1], True)
+
+    def test_rotor_with_mapping_and_notches(self):
+        rotor = RotorWithMappingAndNotches(offset=0, period=1,
+                                           rotor_mapping={'A':'F'},
+                                           notches={'A','F'})
+        self.assertEqual(rotor.forward('A'), ('F', False)) # position A
+        self.assertEqual(rotor.forward('A', True), ('B', True)) # p: B
+        self.assertEqual(rotor.forward('F', True), ('H', False)) # p: C
+        self.assertEqual(rotor.forward('A', True), ('D', False)) # p: D
+        self.assertEqual(rotor.forward('A', True), ('E', False))  # p: E
+        self.assertEqual(rotor.forward('A', True), ('F', False))  # p: F
+        self.assertEqual(rotor.forward('A', False), ('F', False))  # p: F
+        self.assertEqual(rotor.forward('A', True), ('G', True))  # p: G
