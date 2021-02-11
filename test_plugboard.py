@@ -14,12 +14,6 @@ class PlugboardUnitTests(unittest.TestCase):
         self.assertEqual(plugboard.transform('Z'), 'A')
         self.assertEqual(plugboard.transform('C'), 'C')
 
-    def test_simple_inverse_transforms(self):
-        plugboard = Plugboard([('A', 'Z')])
-        self.assertEqual(plugboard.inverse_transform('A'), 'Z')
-        self.assertEqual(plugboard.inverse_transform('Z'), 'A')
-        self.assertEqual(plugboard.inverse_transform('C'), 'C')
-
     def test_plugboard_transform_to_the_same(self):
         plugboard = Plugboard([('A', 'A')])
         self.assertEqual(plugboard.transform('A'), 'A')

@@ -1,4 +1,4 @@
-from enigma.rotor import Rotor
+from enigma.rotors.rotor import Rotor
 import unittest
 
 class RotorUnitTests(unittest.TestCase):
@@ -14,58 +14,63 @@ class RotorUnitTests(unittest.TestCase):
 
     def test_no_offset_rotor(self):
         rotor = Rotor(offset=0, period=1)
-        self.assertEqual(rotor.transform('A'), 'A')
-        self.assertEqual(rotor.transform('A'), 'B')
-        self.assertEqual(rotor.transform('A'), 'C')
-        self.assertEqual(rotor.transform('A'), 'D')
+        self.assertEqual(rotor.backward('A'), 'A')
+        self.assertEqual(rotor.forward('A'), 'B')
+        self.assertEqual(rotor.forward('A'), 'C')
+        self.assertEqual(rotor.forward('A'), 'D')
+        self.assertEqual(rotor.forward('A'), 'E')
 
     def test_offset_1_rotor(self):
         rotor = Rotor(offset=1, period=4)
-        self.assertEqual(rotor.transform('A'), 'B')
-        self.assertEqual(rotor.transform('B'), 'C')
-        self.assertEqual(rotor.transform('C'), 'D')
-        self.assertEqual(rotor.transform('D'), 'E')
-        self.assertEqual(rotor.transform('E'), 'G')
+        self.assertEqual(rotor.forward('A'), 'B')
+        self.assertEqual(rotor.forward('B'), 'C')
+        self.assertEqual(rotor.forward('C'), 'D')
+        self.assertEqual(rotor.forward('D'), 'F')
+        self.assertEqual(rotor.forward('E'), 'G')
 
     def test_offset_1_period_1(self):
         rotor = Rotor(offset=1, period=1)
-        self.assertEqual(rotor.transform('A'), 'B')
-        self.assertEqual(rotor.transform('B'), 'D')
-        self.assertEqual(rotor.transform('C'), 'F')
-        self.assertEqual(rotor.transform('D'), 'H')
+        self.assertEqual(rotor.forward('A'), 'C')
+        self.assertEqual(rotor.forward('B'), 'E')
+        self.assertEqual(rotor.forward('C'), 'G')
+        self.assertEqual(rotor.forward('D'), 'I')
 
     def test_invalid_char_error(self):
         rotor = Rotor(offset=1, period=1)
         with self.assertRaises(AssertionError):
-            rotor.transform('a')
+            rotor.forward('a')
 
     def test_full_offset_rotation(self):
         rotor = Rotor(offset=0, period=1)
-        for num in range(ord('Z')-ord('A')+1):
-            self.assertEqual(rotor.transform('A'), chr(num+ord('A')))
-        self.assertEqual(rotor.transform('A'), 'A')
+        for num in range(1,ord('Z')-ord('A')+1):
+            self.assertEqual(rotor.forward('A'), chr(num + ord('A')))
+        self.assertEqual(rotor.forward('A'), 'A')
 
     def test_rotor_reset(self):
-        rotor = Rotor(offset=1, period=1)
-        self.assertEqual(rotor.transform('A'), 'B')
-        self.assertEqual(rotor.transform('B'), 'D')
-        self.assertEqual(rotor.transform('C'), 'F')
-        self.assertEqual(rotor.transform('D'), 'H')
+        rotor = Rotor(offset=0, period=1)
+        self.assertEqual(rotor.forward('A'), 'B')
+        self.assertEqual(rotor.forward('B'), 'D')
+        self.assertEqual(rotor.forward('C'), 'F')
+        self.assertEqual(rotor.forward('D'), 'H')
         rotor.reset()
-        self.assertEqual(rotor.transform('A'), 'B')
-        self.assertEqual(rotor.transform('B'), 'D')
-        self.assertEqual(rotor.transform('C'), 'F')
-        self.assertEqual(rotor.transform('D'), 'H')
+        self.assertEqual(rotor.forward('A'), 'B')
+        self.assertEqual(rotor.forward('B'), 'D')
+        self.assertEqual(rotor.forward('C'), 'F')
+        self.assertEqual(rotor.forward('D'), 'H')
 
     def test_rotor_reset_and_inverse_transform(self):
-        rotor = Rotor(offset=1, period=1)
-        self.assertEqual(rotor.transform('A'), 'B')
-        self.assertEqual(rotor.transform('B'), 'D')
-        self.assertEqual(rotor.transform('C'), 'F')
-        self.assertEqual(rotor.transform('D'), 'H')
+        rotor = Rotor(offset=0, period=1)
+        self.assertEqual(rotor.forward('A'), 'B')
+        self.assertEqual(rotor.forward('B'), 'D')
+        self.assertEqual(rotor.forward('C'), 'F')
+        self.assertEqual(rotor.forward('D'), 'H')
         rotor.reset()
-        self.assertEqual(rotor.inverse_transform('B'), 'A')
-        self.assertEqual(rotor.inverse_transform('D'), 'B')
-        self.assertEqual(rotor.inverse_transform('F'), 'C')
-        self.assertEqual(rotor.inverse_transform('H'), 'D')
+        rotor.forward('A')
+        self.assertEqual(rotor.backward('B'), 'A')
+        rotor.forward('B')
+        self.assertEqual(rotor.backward('D'), 'B')
+        rotor.forward('C')
+        self.assertEqual(rotor.backward('F'), 'C')
+        rotor.forward('D')
+        self.assertEqual(rotor.backward('H'), 'D')
 

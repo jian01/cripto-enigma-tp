@@ -17,32 +17,29 @@ class Rotor:
         self.period = period
         self.cyphered_count = 0
 
-    def transform(self, char: str) -> str:
+    def forward(self, char: str) -> str:
         """
         Transforms a char through the rotor
         :param char: the char to transform
         :return: the transformed char
         """
         assert ord('A') <= ord(char) <= ord('Z')
-        transformed = chr(((ord(char) - ord('A') + self.offset) % 26) + ord('A'))
         self.cyphered_count += 1
         if self.cyphered_count % self.period == 0:
             self.offset += 1
+        transformed = chr(((ord(char) - ord('A') + self.offset) % 26) + ord('A'))
         return transformed
 
-    def inverse_transform(self, char: str) -> str:
+    def backward(self, char: str) -> str:
         """
-        Applies the inverse transform
+        Applies the backward current run through the rotor
 
         :param char: the char to transform
-        :return: the inverse transform of the char
+        :return: the transformed char
         """
         assert ord('A') <= ord(char) <= ord('Z')
-        inverse_transform = chr(((ord(char) - ord('A') - self.offset) % 26) + ord('A'))
-        self.cyphered_count += 1
-        if self.cyphered_count % self.period == 0:
-            self.offset += 1
-        return inverse_transform
+        transform = chr(((ord(char) - ord('A') - self.offset) % 26) + ord('A'))
+        return transform
 
     def reset(self) -> NoReturn:
         """

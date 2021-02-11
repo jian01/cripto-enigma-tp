@@ -1,18 +1,22 @@
 from .plugboard import Plugboard
-from .rotor import Rotor
+from enigma.rotors.rotor import Rotor
+from enigma.reflectors.reflector import Reflector
 from typing import NoReturn, List
 
 class Enigma:
     """
     Enigma machine
     """
-    def __init__(self, plugboard: Plugboard, rotors: List[Rotor]):
+    def __init__(self, reflector: Reflector,
+                 plugboard: Plugboard, rotors: List[Rotor]):
         """
         Creates a enigma machine
 
+        :param reflector: the reflector to use
         :param plugboard: the plugboard to use
         :param rotors: the rotors for rotate chars
         """
+        self.reflector = reflector
         self.plugboard = plugboard
         self.rotors = rotors
 
@@ -29,7 +33,10 @@ class Enigma:
         for c in plaintext:
             c = self.plugboard.transform(c)
             for rot in self.rotors:
-                c = rot.transform(c)
+                c = rot.forward(c)
+            c = self.reflector.reflect(c)
+            for rot in self.rotors:
+                c = rot.backward(c)
             c = self.plugboard.transform(c)
             cyphertext += c
         self._reset()
@@ -41,15 +48,7 @@ class Enigma:
         :param cyphertext: the cyphertext to decrypt
         :return: the decrypted text
         """
-        plaintext = ""
-        for c in cyphertext:
-            c = self.plugboard.inverse_transform(c)
-            for rot in self.rotors:
-                c = rot.inverse_transform(c)
-            c = self.plugboard.inverse_transform(c)
-            plaintext += c
-        self._reset()
-        return plaintext
+        return self.encrypt(cyphertext)
 
     def _reset(self) -> NoReturn:
         """
