@@ -39,7 +39,7 @@ class Enigma:
             for rot in self.rotors:
                 c, do_step = rot.forward(c, do_step)
             c = self.reflector.reflect(c)
-            for rot in self.rotors:
+            for rot in reversed(self.rotors):
                 c = rot.backward(c)
             c = self.plugboard.transform(c)
             cyphertext += c

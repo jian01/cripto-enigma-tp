@@ -1,7 +1,9 @@
 from typing import NoReturn, Optional, Tuple, Dict, Set
 
+from .rotor import Rotor
 
-class RotorWithMappingAndNotches:
+
+class RotorWithMappingAndNotches(Rotor):
     """
     Engima rotor with a mapping for each character and a notch
     """
@@ -18,12 +20,10 @@ class RotorWithMappingAndNotches:
         """
         assert period > 0
         assert offset >= 0
-        self.offset = offset
-        self.period = period
-        self.step_count = 0
         self.rotor_mapping = rotor_mapping
         self.notches = notches
         self.inverse_rotor_mapping = {v: k for k, v in self.rotor_mapping.items()}
+        super().__init__(offset, period)
 
     def forward(self, char: str, step: Optional[bool] = False) -> Tuple[str, bool]:
         """
@@ -40,10 +40,11 @@ class RotorWithMappingAndNotches:
                 if chr(ord('A') + (self.offset % 26)) in self.notches:
                     do_step = True
                 self.offset += 1
-        transformed = chr(((ord(char) - ord('A') + self.offset) % 26) + ord('A'))
-        if transformed in self.rotor_mapping:
-            transformed = self.rotor_mapping[transformed]
-        return transformed, do_step
+        char = chr(((ord(char) - ord('A') + self.offset) % 26) + ord('A'))
+        if char in self.rotor_mapping:
+            char = self.rotor_mapping[char]
+        char = chr(((ord(char) - ord('A') - self.offset) % 26) + ord('A'))
+        return char, do_step
 
     def backward(self, char: str) -> str:
         """
@@ -53,10 +54,11 @@ class RotorWithMappingAndNotches:
         :return: the transformed char
         """
         assert ord('A') <= ord(char) <= ord('Z')
-        transform = chr(((ord(char) - ord('A') - self.offset) % 26) + ord('A'))
-        if transform in self.inverse_rotor_mapping:
-            transform = self.inverse_rotor_mapping[transform]
-        return transform
+        char = chr(((ord(char) - ord('A') + self.offset) % 26) + ord('A'))
+        if char in self.inverse_rotor_mapping:
+            char = self.inverse_rotor_mapping[char]
+        char = chr(((ord(char) - ord('A') - self.offset) % 26) + ord('A'))
+        return char
 
     def reset(self) -> NoReturn:
         """

@@ -1,14 +1,14 @@
 from .reflector import Reflector
 
 
-class UkwB(Reflector):
+class ReflectorB(Reflector):
     """
     Engima reflector B
     """
 
     def __init__(self):
         self.reflection_map = {}
-        for l1, l2 in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "ENKQAUYWJICOPBLMDXZVFTHRGS"):
+        for l1, l2 in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "YRUHQSLDPXNGOKMIEBFZCWVJAT"):
             self.reflection_map[l1] = l2
 
     def reflect(self, char: str) -> str:
