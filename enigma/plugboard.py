@@ -1,9 +1,11 @@
 from typing import List, Tuple, Optional
 
+
 class Plugboard:
     """
     Enigma plugboard
     """
+
     def __init__(self, permutations: Optional[List[Tuple[str, str]]] = None):
         """
 
@@ -23,14 +25,5 @@ class Plugboard:
 
         :param char: the char to transform
         :return: the transformed chars
-        """
-        return self.permutation_dict[char] if char in self.permutation_dict else char
-
-    def inverse_transform(self, char: str) -> str:
-        """
-        Applies the inverse transform
-
-        :param char: the char to transform
-        :return: the inverse transform of the char
         """
         return self.permutation_dict[char] if char in self.permutation_dict else char
