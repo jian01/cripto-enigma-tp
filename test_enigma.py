@@ -4,11 +4,16 @@ from enigma.enigma import Enigma
 from enigma.plugboard import Plugboard
 from enigma.reflectors.reflector import Reflector
 from enigma.reflectors.reflector_b import ReflectorB
+from enigma.reflectors.reflector_b_thin import ReflectorBThin
 from enigma.reflectors.reflector_c import ReflectorC
 from enigma.rotors.rotor import Rotor
 from enigma.rotors.rotor_I import RotorI
 from enigma.rotors.rotor_II import RotorII
 from enigma.rotors.rotor_III import RotorIII
+from enigma.rotors.rotor_VI import RotorVI
+from enigma.rotors.rotor_VII import RotorVII
+from enigma.rotors.rotor_VIII import RotorVIII
+from enigma.rotors.rotor_beta import RotorBeta
 
 PLUGBOARD_TUPLES = [('A', 'F'), ('G', 'H'), ('Y', 'S'), ('M', 'T')]
 LOREM_IPSUM = """
@@ -100,5 +105,26 @@ class EnigmaInvariantTests(unittest.TestCase):
                                 RotorI(ring_setting=1)])
         self.assertEqual(enigma.encrypt("AAAAA"), "EWTYX")
         self.assertEqual(enigma.encrypt(REDUCED_LOREM_IPSUM), "HEPCLDHGHAMAXFGUGXCKOFIHDQLOMXROJEYSVJWPUBSCQOAMNMNZBKPPPNLFJOILBXIBKXTGEKEGQNSQZPK")
+        cyphertext = enigma.encrypt(LOREM_IPSUM)
+        self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))
+
+    def test_encryption_double_notch_rotors(self):
+        enigma = Enigma(reflector=ReflectorB(),
+                        plugboard=Plugboard(),
+                        rotors=[RotorVIII(ring_setting=1),
+                                RotorVII(ring_setting=1),
+                                RotorVI(ring_setting=1)])
+        self.assertEqual(enigma.encrypt(REDUCED_LOREM_IPSUM), "QPEVWGFMEFUKAMFQQOHBMHYMEQNTFCOWYMKZBTGEEMWZEPLDYYNTLPXAVEYCZBJWYOQMLCJHITIYZRDZTPX")
+        cyphertext = enigma.encrypt(LOREM_IPSUM)
+        self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))
+
+    def test_encryption_m4(self):
+        enigma = Enigma(reflector=ReflectorBThin(),
+                        plugboard=Plugboard(),
+                        rotors=[RotorIII(ring_setting=1),
+                                RotorII(),
+                                RotorI(),
+                                RotorBeta(ring_setting=3)])
+        self.assertEqual(enigma.encrypt(REDUCED_LOREM_IPSUM), "NXVMWHIMNFCIDSJXDNQTIBJNYMAWWWVNCPQZJREWOUCNDKSHKQRBMETDSWEJDVJUIEGETVQUAORAYMKMDFA")
         cyphertext = enigma.encrypt(LOREM_IPSUM)
         self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))
