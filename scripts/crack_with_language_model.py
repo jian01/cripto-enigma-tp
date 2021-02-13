@@ -3,7 +3,7 @@ from random import shuffle
 from enigma.rotor import Rotor
 from enigma.enigma import Enigma
 from enigma.plugboard import Plugboard
-from language_models.character_frequency_language_model import CharacterFrequencyLanguageModel
+from language_models.character_frequency_kld_language_model import CharacterFrequencyLanguageModel
 
 GERMAN_ALPHABET_CHARACTERS = "abcdefghijklmnopqrstuvwxyz"
 
