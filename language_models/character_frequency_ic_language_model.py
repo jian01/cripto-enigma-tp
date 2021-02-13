@@ -14,7 +14,8 @@ class CharacterFrequencyICLanguageModel(LanguageModel):
         """
         :param text: the text used for training
         """
-        frequencies = Counter([c for c in text if c.lower() in VALID_CHARACTERS])
+        text = text.lower()
+        frequencies = Counter([c for c in text if c in VALID_CHARACTERS])
         self.ic_expected = sum([f**2 for f in frequencies.values()])/(1/len(VALID_CHARACTERS))
 
     def fitness(self, message) -> float:
@@ -24,6 +25,7 @@ class CharacterFrequencyICLanguageModel(LanguageModel):
         :param message: the message to analyze
         :return: a measure of fitness (the greater the best)
         """
+        message = message.lower()
         frequencies = Counter(message)
         ic = sum([f*(f-1) for f in frequencies.values()])/(len(message)*(len(message)-1)/len(VALID_CHARACTERS))
         return abs(ic-self.ic_expected)
