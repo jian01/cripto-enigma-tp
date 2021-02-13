@@ -1,16 +1,25 @@
 from collections import Counter
-
+from .language_model import LanguageModel
 import scipy.special as sp
 
 GERMAN_ALPHABET_CHARACTERS = "abcdefghijklmnopqrstuvwxyz"
 
 
-class CharacterFrequencyLanguageModel:
+class CharacterFrequencyKLDLanguageModel(LanguageModel):
+    """
+    A simple character frequency language model that uses Kullback Leibler Divergence
+    """
     def __init__(self, text):
         self.frequencies = Counter(text)
         self.total_characters = sum(self.frequencies.values())
 
-    def kullback_leibler_divergence(self, message):
+    def fitness(self, message) -> float:
+        """
+        Gets a message and returns how well fitted is to the language model
+
+        :param message: the message to analyze
+        :return: a measure of fitness (the greater the best)
+        """
         frequencies = Counter(message)
 
         # TODO: Try with Euler correction.
@@ -21,5 +30,5 @@ class CharacterFrequencyLanguageModel:
             x2.append((frequencies[c] + 1) / len(message))
 
         # TODO: Try with modified KB divergence.
-        return sum(sp.rel_entr(x1, x2))
+        return -sum(sp.rel_entr(x1, x2))
 

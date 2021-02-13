@@ -29,7 +29,7 @@ class Cracker:
             rotor_4 = Rotor(combination[3], HARDCODED_PERIOD)
             enigma_machine = Enigma(plugboard, [rotor_1, rotor_2, rotor_3, rotor_4])
             decrypted_message = enigma_machine.decrypt(encrypted_message)
-            kb_divergences[combination] = (self.language_model.kullback_leibler_divergence(decrypted_message), decrypted_message)
+            kb_divergences[combination] = (self.language_model.fitness(decrypted_message), decrypted_message)
             print(i)
             i+=1
         sorted_divergences = sorted(kb_divergences.items(), key=lambda x: x[1])
