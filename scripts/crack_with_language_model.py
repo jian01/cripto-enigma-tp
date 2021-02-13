@@ -19,6 +19,7 @@ class Cracker:
     def crack(self, encrypted_message):
         combinations = list(product(range(len(GERMAN_ALPHABET_CHARACTERS)), repeat=4))
         shuffle(combinations)
+        print(combinations[:10])
 
         kb_divergences = {}
         i=0
@@ -30,7 +31,7 @@ class Cracker:
             enigma_machine = Enigma(plugboard, [rotor_1, rotor_2, rotor_3, rotor_4])
             decrypted_message = enigma_machine.decrypt(encrypted_message)
             kb_divergences[combination] = (self.language_model.fitness(decrypted_message), decrypted_message)
-            print(i)
+            #print(i)
             i+=1
         sorted_divergences = sorted(kb_divergences.items(), key=lambda x: x[1])
         return sorted_divergences[:1000]

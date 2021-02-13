@@ -21,13 +21,14 @@ class CharacterFrequencyKLDLanguageModel(LanguageModel):
         :return: a measure of fitness (the greater the best)
         """
         frequencies = Counter(message)
+        GERMAN_ALPHABET_LEN = len(GERMAN_ALPHABET_CHARACTERS)
 
         # TODO: Try with Euler correction.
         x1 = []
         x2 = []
         for c in GERMAN_ALPHABET_CHARACTERS:
-            x1.append((self.frequencies[c] + 1) / self.total_characters)
-            x2.append((frequencies[c] + 1) / len(message))
+            x1.append((self.frequencies[c] + 1) / (self.total_characters + GERMAN_ALPHABET_LEN))
+            x2.append((frequencies[c] + 1) / (len(message) + GERMAN_ALPHABET_LEN))
 
         # TODO: Try with modified KB divergence.
         return -sum(sp.rel_entr(x1, x2))
