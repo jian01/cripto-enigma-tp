@@ -28,5 +28,5 @@ class CharacterFrequencyICLanguageModel(LanguageModel):
         message = [c for c in message.lower() if c in VALID_CHARACTERS]
         frequencies = Counter(message)
         ic = sum([f*(f-1) for f in frequencies.values()])/(len(message)*(len(message)-1)/len(VALID_CHARACTERS))
-        return abs(ic-self.ic_expected)
+        return -abs(ic-self.ic_expected)
 

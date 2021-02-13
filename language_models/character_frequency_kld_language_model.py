@@ -9,7 +9,7 @@ class CharacterFrequencyKLDLanguageModel(LanguageModel):
     """
     A simple character frequency language model that uses Kullback Leibler Divergence
     """
-    def __init__(self, text):
+    def __init__(self, text: str):
         text = [c for c in text.lower() if c in VALID_CHARACTERS]
         self.frequencies = Counter(text)
         self.total_characters = sum(self.frequencies.values())
