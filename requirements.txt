@@ -1,1 +1,1 @@
-scipy
+scipy==1.5.4
