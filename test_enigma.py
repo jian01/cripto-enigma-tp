@@ -14,6 +14,7 @@ PLUGBOARD_TUPLES = [('A', 'F'), ('G', 'H'), ('Y', 'S'), ('M', 'T')]
 LOREM_IPSUM = """
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 """
+REDUCED_LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore"
 
 
 class EnigmaInvariantTests(unittest.TestCase):
@@ -70,12 +71,34 @@ class EnigmaInvariantTests(unittest.TestCase):
         cyphertext = enigma.encrypt(LOREM_IPSUM)
         self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))
 
-    def test_encryption_w_m3_setting(self):
+    def test_encryption_w_m3_reflectorB(self):
         enigma = Enigma(reflector=ReflectorB(),
                         plugboard=Plugboard(),
                         rotors=[RotorIII(), RotorII(), RotorI()])
         self.assertEqual(enigma.decrypt(enigma.encrypt("A")), "A")
         self.assertEqual(enigma.encrypt("AAAAA"), "BDZGO")
         self.assertEqual(enigma.encrypt("PROBANDO"), "LCNCOEFQ")
+        self.assertEqual(enigma.encrypt(REDUCED_LOREM_IPSUM), "PIXWHLIFPVFHECGDYIPYYXWASFXPPOALEJGRHCZXDTNKGZAFAZXFGOSGIYMRMEEZHQBOWSKIZJAVWFDATOH")
+        cyphertext = enigma.encrypt(LOREM_IPSUM)
+        self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))
+
+    def test_encryption_w_m3_reflectorC(self):
+        enigma = Enigma(reflector=ReflectorC(),
+                        plugboard=Plugboard(),
+                        rotors=[RotorIII(), RotorII(), RotorI()])
+        self.assertEqual(enigma.decrypt(enigma.encrypt("A")), "A")
+        self.assertEqual(enigma.encrypt("AAAAA"), "PJBUZ")
+        self.assertEqual(enigma.encrypt(REDUCED_LOREM_IPSUM), "KQZIFEZXSBHUFEFRRNSHTHEDTISEBMIKIURGQERSLBAVMMINXGWLKRCLKQWKBFUKEMSISOUNNBFGATWWKDP")
+        cyphertext = enigma.encrypt(LOREM_IPSUM)
+        self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))
+
+    def test_encryption_w_ringstellung(self):
+        enigma = Enigma(reflector=ReflectorB(),
+                        plugboard=Plugboard(),
+                        rotors=[RotorIII(ring_setting=1),
+                                RotorII(ring_setting=1),
+                                RotorI(ring_setting=1)])
+        self.assertEqual(enigma.encrypt("AAAAA"), "EWTYX")
+        self.assertEqual(enigma.encrypt(REDUCED_LOREM_IPSUM), "HEPCLDHGHAMAXFGUGXCKOFIHDQLOMXROJEYSVJWPUBSCQOAMNMNZBKPPPNLFJOILBXIBKXTGEKEGQNSQZPK")
         cyphertext = enigma.encrypt(LOREM_IPSUM)
         self.assertEqual(enigma.decrypt(cyphertext), "".join([c for c in LOREM_IPSUM.upper() if c.isalpha()]))

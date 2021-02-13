@@ -19,7 +19,7 @@ class RotorWithMappingAndNotches(Rotor):
         :param notches: the output chars that cause the rotor to make the next one step
         """
         assert period > 0
-        assert offset >= 0
+        assert offset >= 0 and offset <= 25
         self.rotor_mapping = rotor_mapping
         self.notches = notches
         self.inverse_rotor_mapping = {v: k for k, v in self.rotor_mapping.items()}
