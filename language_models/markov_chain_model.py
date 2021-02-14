@@ -16,6 +16,8 @@ class MarkovChainModel(LanguageModel):
         """
         conditional_strings = {}
         text = [c for c in text.lower() if c in VALID_CHARACTERS]
+        self.freqs = Counter(text)
+        self.freqs = {k: v/sum(self.freqs.values()) for k,v in self.freqs.items()}
         for i in range(len(text) - 1):
             if text[i] not in conditional_strings:
                 conditional_strings[text[i]] = []
@@ -42,6 +44,6 @@ class MarkovChainModel(LanguageModel):
             conditional_strings[text[i]].append(text[i+1])
         fitness = 0
         for k in self.conditional_models.keys():
-            fitness += self.conditional_models[k].fitness(("".join(conditional_strings[k]) if k in conditional_strings else ""))
+            fitness += self.freqs[k]*self.conditional_models[k].fitness(("".join(conditional_strings[k]) if k in conditional_strings else ""))
         return fitness
 
