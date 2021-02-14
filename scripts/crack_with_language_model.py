@@ -1,9 +1,8 @@
 from itertools import product
 from random import shuffle
-from enigma.rotor import Rotor
 from enigma.enigma import Enigma
 from enigma.plugboard import Plugboard
-from language_models.character_frequency_kld_language_model import CharacterFrequencyLanguageModel
+from language_models.character_frequency_kld_language_model import CharacterFrequencyKLDLanguageModel
 
 GERMAN_ALPHABET_CHARACTERS = "abcdefghijklmnopqrstuvwxyz"
 
@@ -46,7 +45,7 @@ for i in range(10):
 
 plugboard = Plugboard(plugboard_pairs)
 
-language_model2 = CharacterFrequencyLanguageModel("probarunanuevamaneradeescribir".upper())
+language_model2 = CharacterFrequencyKLDLanguageModel("probarunanuevamaneradeescribir".upper())
 cracker = Cracker(language_model2, 10)
 
 enigma = Enigma(plugboard, [Rotor(1, HARDCODED_PERIOD), Rotor(10, HARDCODED_PERIOD), Rotor(12, HARDCODED_PERIOD),

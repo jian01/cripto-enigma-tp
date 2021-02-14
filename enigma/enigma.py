@@ -10,8 +10,7 @@ class Enigma:
     Enigma machine
     """
 
-    def __init__(self, reflector: Reflector,
-                 plugboard: Plugboard, rotors: List[Rotor]):
+    def __init__(self, reflector: Reflector, plugboard: Plugboard, rotors: List[Rotor]):
         """
         Creates a enigma machine
 
@@ -19,7 +18,7 @@ class Enigma:
         :param plugboard: the plugboard to use
         :param rotors: the rotors for rotate chars
         """
-        self.reflector = reflector
+        self.reflector = reflector  
         self.plugboard = plugboard
         self.rotors = rotors
 
