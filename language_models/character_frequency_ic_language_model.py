@@ -1,6 +1,5 @@
 from collections import Counter
 from .language_model import LanguageModel
-import scipy.special as sp
 
 VALID_CHARACTERS = "abcdefghijklmnopqrstuvwxyz"
 
