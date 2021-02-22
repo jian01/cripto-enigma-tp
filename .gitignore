@@ -130,6 +130,6 @@ dmypy.json
 .idea/
 
 #Archivos intermedios de latex
-.aux
-.log
-.toc
+*.aux
+*.log
+*.toc
