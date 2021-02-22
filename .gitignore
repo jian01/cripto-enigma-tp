@@ -128,3 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/
+
+#Archivos intermedios de latex
+.aux
+.log
+.toc
